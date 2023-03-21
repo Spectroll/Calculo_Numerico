@@ -622,28 +622,26 @@ class Cramer_ex2(Scene):
 
 class Gauss_ex2(Scene):
     def construct(self):
-        matriz_a = Matrix([["4", "-1", "1"],
-                            ["2", "5", "2"],
-                            ["1", "2", "4"]],
+        matriz_a = Matrix([["4", "-1", "1", "8"],
+                            ["2", "5", "2", "3"],
+                            ["1", "2", "4", "11"]],
                             left_bracket="(",
-                            right_bracket=")").set_color(BLACK)
-        matriz_a_meio = Matrix([["4", "-1", "1"],
-                                ["0", "11/2", "3/2"],
-                                ["0", "9/4", "15/4"]],
+                            right_bracket=")").set_color(BLACK).scale(1.25)
+        matriz_a_meio = Matrix([["4", "-1", "1", "8"],
+                                ["0", r"\tfrac{11}{2}", r"\tfrac{3}{2}", "-1"],
+                                ["0", r"\tfrac{9}{4}", r"\tfrac{15}{4}", "9"]],
                                 left_bracket="(",
-                                right_bracket=")").set_color(BLACK).move_to(matriz_a)
-        matriz_a_final = Matrix([["4", "-1", "1"],
-                                ["0", "11/2", "3/2"],
-                                ["0", "0", "69/22"]],
+                                right_bracket=")").set_color(BLACK).move_to(matriz_a).scale(1.25)
+        matriz_a_final = Matrix([["4", "-1", "1", "8"],
+                                ["0", r"\tfrac{11}{2}", r"\tfrac{3}{2}", "-1"],
+                                ["0", "0", r"\tfrac{69}{22}", r"\tfrac{207}{22}"]],
                                 left_bracket="(",
-                                right_bracket=")").set_color(BLACK).move_to(matriz_a)
+                                right_bracket=")").set_color(BLACK).move_to(matriz_a).scale(1.25)
         
         a = Text("A = ", font_size= 48).next_to(matriz_a, LEFT).set_color(BLACK)
+        self.add(a, matriz_a)
         self.wait()
-        self.play(FadeIn(a))
-        self.play(FadeIn(matriz_a))
-        self.wait()
-        arr = Arrow(start = LEFT, end = RIGHT, max_stroke_width_to_length_ratio= 10).next_to(matriz_a.get_rows()[0].get_left(), buff= -2).set_color(BLACK)
+        arr = Arrow(start = LEFT, end = RIGHT, max_stroke_width_to_length_ratio= 10).next_to(matriz_a.get_rows()[0].get_left(), buff= -2.2).set_color(BLACK)
         self.play(FadeOut(a))
         self.play(GrowArrow(arr))
         eq1 = Tex(r"$a_{1}` = a_{1}$", font_size= 32).set_color(BLACK).next_to(matriz_a, UP, MED_SMALL_BUFF)
@@ -652,11 +650,9 @@ class Gauss_ex2(Scene):
         eq_4 = Tex(r"$a_{3}` = \frac{-9}{22} \times a_{2}` + a_{3}$", font_size= 32).set_color(BLACK).next_to(matriz_a, UP, MED_SMALL_BUFF)
 
         self.play(FadeIn(eq1))
-        self.wait()
         self.play(FadeOut(eq1))
-        self.play(arr.animate.shift(DOWN/1.5))
+        self.play(arr.animate.shift(DOWN))
         self.play(Write(eq_2))
-        self.wait()
         self.play(ReplacementTransform(matriz_a.get_rows()[1], matriz_a_meio.get_rows()[1]))
         self.wait(3)
 
@@ -665,7 +661,7 @@ class Gauss_ex2(Scene):
         self.play(Write(eq_3))
         self.wait()
         self.play(ReplacementTransform(matriz_a.get_rows()[2], matriz_a_meio.get_rows()[2]))
-        self.wait(3)
+        self.wait(2)
 
         self.play(FadeOut(eq_3))
         self.wait()
@@ -673,4 +669,214 @@ class Gauss_ex2(Scene):
         self.play(ReplacementTransform(matriz_a_meio.get_rows()[2], matriz_a_final.get_rows()[2]))
         self.wait()
         self.play(FadeOut(eq_4, arr))
+        self.wait(3)
+
+class Gauss_ex2_2(Scene):
+    def construct(self):
+        sistema = Matrix([["4x_{1} - x_{2} + x_{3} = 8"], 
+                          [r"\tfrac{11}{2x_{2}} + \tfrac{3}{2x_{3}} = -1"],
+                          [r"\tfrac{69x_{3}}{22} = \tfrac{207}{22}"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to([0, 0, 0])
+        
+        sistema_passo = Matrix([["4x_{1} - x_{2} + x_{3} = 8"], 
+                          [r"\tfrac{11}{2x_{2}} + \tfrac{3}{2x_{3}} = -1"],
+                          ["69x_{3} = 207"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to([0, 0, 0])
+        
+        
+        sistema_meio = Matrix([["4x_{1} - x_{2} + 3 = 8"], 
+                          [r"\tfrac{11}{2}x_{2} + \tfrac{3}{2}*3 = -1"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to([0, 0, 0])
+        
+        sistema_meio2 = Matrix([["4x_{1} + 1 + 3 = 8"], 
+                          ["x_{2} = -1"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to([0, 0, 0])
+        
+        sistema_fim = Matrix([["x_{1}= 1"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to([0, 0, 0])
+        
+        eq1 = Tex(r"$x_{3} = 3$", font_size= 42).set_color(BLACK).next_to(sistema, RIGHT, buff= 2.25)
+        eq2 = Tex(r"$x_{2} = -1$", font_size= 42).set_color(BLACK).next_to(eq1, UP, MED_SMALL_BUFF)
+        eq3 = Tex(r"$x_{1} = 1$", font_size= 42).set_color(BLACK).next_to(eq2, UP, MED_SMALL_BUFF)
+
+        self.add(sistema)
+        self.wait()
+        self.play(ReplacementTransform(sistema.get_rows()[2], sistema_passo.get_rows()[2]))
+        self.wait()
+        self.play(FadeOut(sistema_passo.get_rows()[2]))
+        self.play(Write(eq1))
+        self.wait()
+        self.play(ReplacementTransform(sistema.get_rows()[1], sistema_meio.get_rows()[1]))
+        self.wait()
+        self.play(ReplacementTransform(sistema_meio.get_rows()[1], sistema_meio2.get_rows()[1]))
+        self.play(FadeOut(sistema_meio2.get_rows()[1]))
+        self.play(Write(eq2))
+        self.wait()
+        self.play(ReplacementTransform(sistema.get_rows()[0], sistema_meio2.get_rows()[0]))
+        self.wait()
+        self.play(ReplacementTransform(sistema_meio2.get_rows()[0], sistema_fim.get_rows()[0]))
+        self.play(FadeOut(sistema.get_brackets(), sistema_fim.get_rows()[0]))
+        self.play(Write(eq3))
+        self.wait()
+        result = VGroup(eq1, eq2, eq3)
+        result.generate_target()
+        result.target.move_to([0, 0, 0]).scale(1.25)
+        self.play(MoveToTarget(result))
         self.wait(5)
+
+class ALU_ex2(Scene):
+    def construct(self):
+        matriz_u = Matrix([["4", "-1", "1"],
+                            ["0", r"\tfrac{11}{2}", r"\tfrac{3}{2}"],
+                            ["0", "0", r"\tfrac{69}{22}"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK).move_to([0, 2, 0]).scale(1.25)
+        u = Text("U = ", font_size= 42).set_color(BLACK).next_to(matriz_u, LEFT)
+
+        matriz_l = Matrix([["1", "0", "0"],
+                            [r"\tfrac{1}{2}", "1", "0"],
+                            [r"\tfrac{1}{4}", r"\tfrac{9}{22}", "1"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK).next_to(matriz_u, DOWN, buff= 1.6).scale(1.25)
+        ent = matriz_l.get_entries()
+        l = Text("L = ", font_size= 42).set_color(BLACK).next_to(matriz_l, LEFT)
+
+        self.play(FadeIn(matriz_u, u))
+        self.wait()
+        self.play(Write(l))
+        self.play(FadeIn(matriz_l.get_brackets()))
+        self.wait()
+        self.play(FadeIn(ent[3], ent[6], ent[7]))
+        self.wait()
+        self.play(FadeIn(ent[0], ent[4], ent[8]))
+        self.wait()
+        self.play(FadeIn(ent[1], ent[2], ent[5]))
+        self.wait(3)
+        
+class ALU_ex2_2(Scene):
+    def construct(self):
+        sistema_alu = Matrix([[r"Ly = b"], 
+                                [r"Ux = y"]],
+                                left_bracket="\\{",
+                                right_bracket="}"
+                                ).set_color(BLACK).to_corner(UL)
+        
+        matriz_l = Matrix([["1", "0", "0"],
+                            [r"\tfrac{1}{2}", "1", "0"],
+                            [r"\tfrac{1}{4}", r"\tfrac{9}{22}", "1"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK)
+        
+        matriz_y = Matrix([["y_{1}"],
+                            ["y_{2}"],
+                            ["y_{3}"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK)
+        
+        equals = Text("=", font_size= 42).set_color(BLACK)
+
+        matriz_b = Matrix([["8"],
+                            ["3"],
+                            ["11"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK)
+        
+        lyb = VGroup(matriz_l, matriz_y, equals, matriz_b).arrange()
+
+        self.play(Create(sistema_alu))
+        self.wait()
+        self.play(Create(lyb), run_time= 2)
+        self.wait(3)
+
+        sistema = Matrix([["y_{1} = 8"], 
+                          [r"\tfrac{1}{2}y_{1}} + y_{2} = 3"],
+                          [r"\tfrac{1}{4}y_{1} + \tfrac{9}{22}y_{2} + y_{3} = 11"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to(lyb)
+        
+        
+        sistema_2 = Matrix([["y_{1} = 8"], 
+                          [r"\tfrac{1}{2}8 + y_{2} = 3"],
+                          [r"\tfrac{1}{4}y_{1} + \tfrac{9}{22}y_{2} + y_{3} = 11"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to(lyb)
+        
+        
+        sistema_3 = Matrix([["y_{1} = 8"], 
+                          [r"\tfrac{1}{2}y_{1} + y_{2} = 3"],
+                          [r"\tfrac{1}{4}8 + \tfrac{9}{22}-1 + y_{3} = 11"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to(lyb)
+        
+        matriz_y_final = Matrix([["y_{1} = 8"],
+                            ["y_{2} = -1"],
+                            [r"y_{3} = \tfrac{207}{22}"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK).next_to(sistema, RIGHT, MED_SMALL_BUFF)
+        ent = matriz_y_final.get_entries()
+
+        eq = equals.copy().next_to(matriz_y_final, LEFT)
+
+        matriz_x = Matrix([["x_{1}"],
+                            ["x_{2}"],
+                            ["x_{3}"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK).next_to(eq, LEFT)
+
+        matriz_u = Matrix([["4", "-1", "1"],
+                            ["0", r"\tfrac{11}{2}", r"\tfrac{3}{2}"],
+                            ["0", "0", r"\tfrac{69}{22}"]],
+                            left_bracket="(",
+                            right_bracket=")").set_color(BLACK).next_to(matriz_x, LEFT)
+        
+        sistema_x = Matrix([["4x_{1} - x_{2} + x_{3} = 8"], 
+                          [r"\tfrac{11}{2}x_{2} + \tfrac{11}{2}x_{3} = -1"],
+                          [r"\tfrac{69}{22}x_{3} = \tfrac{207}{22}"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK).move_to(lyb)
+        
+        sistema_x_final = Matrix([["x_{1} = 1"], 
+                          [r"x_{2} = -1"],
+                          [r"x_{3} = 3"]],
+                         left_bracket="\\{",
+                         right_bracket="}"
+                         ).set_color(BLACK)
+        
+        self.play(FadeTransform(lyb, sistema))
+        self.wait()
+        self.play(Write(ent[0]))
+        self.wait()
+        self.play(ReplacementTransform(sistema.get_rows()[1], sistema_2.get_rows()[1]))
+        self.wait()
+        self.play(Write(ent[1]))
+        self.wait()
+        self.play(ReplacementTransform(sistema.get_rows()[2], sistema_3.get_rows()[2]))
+        self.wait()
+        self.play(Write(ent[2]))
+        self.wait()
+        self.play(FadeOut(sistema, sistema_2.get_rows()[1], sistema_3.get_rows()[2]))
+        self.play(Create(matriz_y_final.get_brackets()))
+        self.wait()
+        uxb = VGroup(eq, matriz_x, matriz_u)
+        self.play(Create(uxb))
+        self.wait()
+        self.play(ReplacementTransform(VGroup(uxb, matriz_y_final), sistema_x))
+        self.wait()
+        self.play(ReplacementTransform(sistema_x.get_rows()[2], sistema_x_final.get_rows()[2]))
+        self.play(ReplacementTransform(sistema_x.get_rows()[1], sistema_x_final.get_rows()[1]))
+        self.play(ReplacementTransform(sistema_x.get_rows()[0], sistema_x_final.get_rows()[0]))
+        self.wait()
